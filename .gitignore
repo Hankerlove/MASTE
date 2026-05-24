@@ -1,0 +1,39 @@
+# Python caches and build outputs
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local environments and secrets
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Local OS/editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Files intentionally excluded from the public GitHub release
+tests/
+paper/
+data/
+results/
+experiments/aggregate_cost.py
+experiments/analyze_failures.py
+experiments/generate_figures.py
+experiments/repair_empty_preds.py
+*.sh
+
+# Generated logs and local binaries
+*.log
+tectonic
