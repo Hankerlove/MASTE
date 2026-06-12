@@ -1,4 +1,3 @@
-<div align="center">
 # MASTE: Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet Extraction
 
 This repository contains the official implementation of MASTE, a training-free multi-agent framework for zero-shot Aspect Sentiment Triplet Extraction (ASTE).
