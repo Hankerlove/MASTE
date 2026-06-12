@@ -1,8 +1,8 @@
+<div align="center">
+
 # MASTE: Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet Extraction
-
+</div>
 This repository contains the official implementation of MASTE, a training-free multi-agent framework for zero-shot Aspect Sentiment Triplet Extraction (ASTE).
-
-MASTE decomposes ASTE into four lightweight LLM agents and requires no task-specific training, enabling zero-shot triplet extraction out of the box.
 
 <div align="center">
     <img src="assets/framework.png" width="800"/>
@@ -17,15 +17,15 @@ MASTE decomposes ASTE into four lightweight LLM agents and requires no task-spec
 
 ### Installation
 
-#### 1. Create Virtural Environment
-We recommend using Python 3.10 and venv for environment management(Similar goes for conda environment).
+#### 1. Create Virtual Environment
+We recommend using Python 3.10 and venv for environment management (similar for conda environments).
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### 2. Configure an OpenAI-compatible API :
+#### 2. Configure an OpenAI-compatible API:
 
 ```bash
 export OPENAI_API_KEY=sk-...
@@ -51,9 +51,11 @@ The expected domain folders are:
 16res/
 ```
 
-Each folder should contain the corresponding `train_triplets.txt`, `dev_triplets.txt`, and `test_triplets.txt` files. The dataset is not included in this repository; please obtain it from the original ASTE benchmark release and place it at the path above.
+Each folder should contain the corresponding `train_triplets.txt`, `dev_triplets.txt`, and `test_triplets.txt` files. The dataset is not included in this repository. Please download it from the original release and place it under the path above:
+- **GitHub**: [xuuuluuu/SemEval-Triplet-data](https://github.com/xuuuluuu/SemEval-Triplet-data)
+- **Hugging Face**: [NEUDM/aste-data-v2](https://huggingface.co/datasets/NEUDM/aste-data-v2)
 
-## Run Experiments
+## 🚀Run Experiments
 
 - Single domain (MASTE):
 
@@ -114,7 +116,7 @@ PYTHONPATH=. python experiments/run_ablation.py \
 Each experiment writes one JSON file per domain and a `summary.json` file under the specified output directory. Per-domain files contain the original sentence, gold triplets, predicted triplets, and exact-match evaluation metrics.
 
 
-## Repository Structure
+## 🤗Repository Structure
 
 ```text
 src/
@@ -136,16 +138,11 @@ experiments/
 requirements.txt
 ```
 
-Local test files, paper sources, datasets, generated results, logs, and paper-writing helper scripts are intentionally excluded from the public release.
-
-
-
-
 
 
 ## Citation
 
-If you use this code, please cite our paper. We will provide the final BibTeX after the arXiv version is available.
+If you find our paper and code useful, please kindly cite our work. A BibTeX entry will be provided upon publication.
 
 ```bibtex
 @misc{maste_arxiv_tba,
