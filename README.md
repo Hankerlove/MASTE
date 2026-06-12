@@ -57,17 +57,6 @@ Each folder should contain the corresponding `train_triplets.txt`, `dev_triplets
 
 ## 🚀Run Experiments
 
-- Single domain (MASTE):
-
-```bash
-PYTHONPATH=. python experiments/run_main.py \
-  --method maste \
-  --model gpt-4o \
-  --domains 14res \
-  --split test \
-  --output_dir results/maste_gpt4o
-```
-
 - All four domains (MASTE):
 
 ```bash
@@ -79,7 +68,7 @@ PYTHONPATH=. python experiments/run_main.py \
   --output_dir results/maste_gpt4o
 ```
 
-- Single-call zero-shot baseline:
+- Zero-shot baseline:
 
 ```bash
 PYTHONPATH=. python experiments/run_main.py \
@@ -88,6 +77,17 @@ PYTHONPATH=. python experiments/run_main.py \
   --domains 14res 14lap 15res 16res \
   --split test \
   --output_dir results/zero_shot_gpt4o
+```
+
+- Few-shot baseline:
+
+```bash
+PYTHONPATH=. python experiments/run_main.py \
+  --method few_shot \
+  --model gpt-4o \
+  --domains 14res 14lap 15res 16res \
+  --split test \
+  --output_dir results/few_shot_gpt4o
 ```
 
 - Chain-of-thought baseline:
