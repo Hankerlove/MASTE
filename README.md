@@ -1,18 +1,119 @@
+<div align="center">
 # MASTE: Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet Extraction
 
-This repository contains the official implementation of **MASTE**, a
-training-free multi-agent framework for zero-shot Aspect Sentiment Triplet
-Extraction (ASTE).
+This repository contains the official implementation of MASTE, a training-free multi-agent framework for zero-shot Aspect Sentiment Triplet Extraction (ASTE).
 
-Given a review sentence, ASTE aims to extract all
-`(aspect, opinion, sentiment)` triples. MASTE decomposes this structured
-prediction problem into four sequential LLM agents:
+MASTE decomposes ASTE into four lightweight LLM agents and requires no task-specific training, enabling zero-shot triplet extraction out of the box.
 
-1. **Aspect Extraction Agent** identifies candidate aspect terms.
-2. **Opinion Extraction Agent** finds opinion expressions conditioned on each
-   extracted aspect.
-3. **Sentiment Reasoning Agent** assigns polarity to each aspect-opinion pair.
-4. **Consistency Check Agent** verifies and revises the predicted triplets.
+<div align="center">
+    <img src="assets/framework.png" width="800"/>
+</div>
+
+---
+
+## 📰 Updates
+- **`2026-06-12`**: Codebase is publicly available.
+
+## 🎯 Getting Started
+
+### Installation
+
+#### 1. Create Virtural Environment
+We recommend using Python 3.10 and venv for environment management(Similar goes for conda environment).
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+#### 2. Configure an OpenAI-compatible API :
+
+```bash
+export OPENAI_API_KEY=sk-...
+
+# Use official or another OpenAI-compatible provider
+export OPENAI_BASE_URL=...
+```
+
+### Data Preparation
+
+The experiment scripts expect ASTE-Data-V2 files under:
+
+```text
+data/aste/SemEval-Triplet-data/ASTE-Data-V2-EMNLP2020/
+```
+
+The expected domain folders are:
+
+```text
+14res/
+14lap/
+15res/
+16res/
+```
+
+Each folder should contain the corresponding `train_triplets.txt`, `dev_triplets.txt`, and `test_triplets.txt` files. The dataset is not included in this repository; please obtain it from the original ASTE benchmark release and place it at the path above.
+
+## Run Experiments
+
+- Single domain (MASTE):
+
+```bash
+PYTHONPATH=. python experiments/run_main.py \
+  --method maste \
+  --model gpt-4o \
+  --domains 14res \
+  --split test \
+  --output_dir results/maste_gpt4o
+```
+
+- All four domains (MASTE):
+
+```bash
+PYTHONPATH=. python experiments/run_main.py \
+  --method maste \
+  --model gpt-4o \
+  --domains 14res 14lap 15res 16res \
+  --split test \
+  --output_dir results/maste_gpt4o
+```
+
+- Single-call zero-shot baseline:
+
+```bash
+PYTHONPATH=. python experiments/run_main.py \
+  --method zero_shot \
+  --model gpt-4o \
+  --domains 14res 14lap 15res 16res \
+  --split test \
+  --output_dir results/zero_shot_gpt4o
+```
+
+- Chain-of-thought baseline:
+
+```bash
+PYTHONPATH=. python experiments/run_main.py \
+  --method cot \
+  --model gpt-4o \
+  --domains 14res 14lap 15res 16res \
+  --split test \
+  --output_dir results/cot_gpt4o
+```
+
+- Ablation study:
+
+```bash
+PYTHONPATH=. python experiments/run_ablation.py \
+  --model gpt-4o \
+  --domain 14res \
+  --split test \
+  --output_dir results/ablation/gpt4o_14res
+```
+
+## Output Format
+
+Each experiment writes one JSON file per domain and a `summary.json` file under the specified output directory. Per-domain files contain the original sentence, gold triplets, predicted triplets, and exact-match evaluation metrics.
+
 
 ## Repository Structure
 
@@ -36,116 +137,24 @@ experiments/
 requirements.txt
 ```
 
-Local test files, paper sources, datasets, generated results, logs, and
-paper-writing helper scripts are intentionally excluded from the public release.
+Local test files, paper sources, datasets, generated results, logs, and paper-writing helper scripts are intentionally excluded from the public release.
 
-## Installation
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
 
-Configure an OpenAI-compatible API endpoint:
 
-```bash
-export OPENAI_API_KEY=sk-...
 
-# Optional: use another OpenAI-compatible provider
-export OPENAI_BASE_URL=https://openrouter.ai/api/v1
-```
-
-## Data Preparation
-
-The experiment scripts expect ASTE-Data-V2 files under:
-
-```text
-data/aste/SemEval-Triplet-data/ASTE-Data-V2-EMNLP2020/
-```
-
-The expected domain folders are:
-
-```text
-14res/
-14lap/
-15res/
-16res/
-```
-
-Each folder should contain the corresponding `train_triplets.txt`,
-`dev_triplets.txt`, and `test_triplets.txt` files. The dataset is not included in
-this repository; please obtain it from the original ASTE benchmark release and
-place it at the path above.
-
-## Running Experiments
-
-Run MASTE on a single domain:
-
-```bash
-PYTHONPATH=. python experiments/run_main.py \
-  --method maste \
-  --model gpt-4o \
-  --domains 14res \
-  --split test \
-  --output_dir results/maste_gpt4o
-```
-
-Run all four ASTE domains:
-
-```bash
-PYTHONPATH=. python experiments/run_main.py \
-  --method maste \
-  --model gpt-4o \
-  --domains 14res 14lap 15res 16res \
-  --split test \
-  --output_dir results/maste_gpt4o
-```
-
-Run a single-call zero-shot baseline:
-
-```bash
-PYTHONPATH=. python experiments/run_main.py \
-  --method zero_shot \
-  --model gpt-4o \
-  --domains 14res 14lap 15res 16res \
-  --split test \
-  --output_dir results/zero_shot_gpt4o
-```
-
-Run a chain-of-thought baseline:
-
-```bash
-PYTHONPATH=. python experiments/run_main.py \
-  --method cot \
-  --model gpt-4o \
-  --domains 14res 14lap 15res 16res \
-  --split test \
-  --output_dir results/cot_gpt4o
-```
-
-Run an ablation experiment:
-
-```bash
-PYTHONPATH=. python experiments/run_ablation.py \
-  --model gpt-4o \
-  --domain 14res \
-  --split test \
-  --output_dir results/ablation/gpt4o_14res
-```
-
-## Output Format
-
-Each experiment writes one JSON file per domain and a `summary.json` file under
-the specified output directory. Per-domain files contain the original sentence,
-gold triplets, predicted triplets, and exact-match evaluation metrics.
 
 ## Citation
 
-If you use this code, please cite our paper:
+If you use this code, please cite our paper. We will provide the final BibTeX after the arXiv version is available.
 
 ```bibtex
-@inproceedings{mastedraft,
-  title = {MASTE: A Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet Extraction},
+@misc{maste_arxiv_tba,
+  title        = {MASTE: A Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet Extraction},
+  author       = {To be updated},
+  year         = {2026},
+  eprint       = {arXiv:XXXX.XXXXX},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CL}
 }
 ```
