@@ -11,6 +11,7 @@ This repository contains the official implementation of MASTE, a training-free m
 ---
 
 ## 📰 Updates
+- **`2026-07-09`**: Paper is publicly available on [arxiv](https://arxiv.org/html/2607.08080v1).
 - **`2026-06-12`**: Codebase is publicly available.
 
 ## 🎯 Getting Started
